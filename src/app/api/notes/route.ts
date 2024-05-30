@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         title,
         description,
         content,
-        authorId,
+        idAuthor: authorId,
       },
     });
 
