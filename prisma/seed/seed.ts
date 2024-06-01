@@ -76,6 +76,14 @@ const main = async () => {
     },
   ]);
 
+  await seed.userFollow(() => [
+    { followingId: 1, followedById: 2 },
+    { followingId: 1, followedById: 3 },
+    { followingId: 2, followedById: 3 },
+    { followingId: 3, followedById: 1 },
+    { followingId: 3, followedById: 2 },
+  ]);
+
   console.log("Database seeded successfully!");
 
   process.exit();

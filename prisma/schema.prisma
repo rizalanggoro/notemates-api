@@ -14,7 +14,21 @@ model User {
   password  String
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
-  notes     Note[]
+
+  notes      Note[]
+  comments   Comment[]
+  likedNotes LikeNote[]
+  followedBy UserFollow[] @relation("followedBy")
+  following  UserFollow[] @relation("following")
+}
+
+model UserFollow {
+  followedBy   User @relation("followedBy", fields: [followedById], references: [id])
+  followedById Int
+  following    User @relation("following", fields: [followingId], references: [id])
+  followingId  Int
+
+  @@id([followingId, followedById])
 }
 
 model Note {
@@ -22,10 +36,32 @@ model Note {
   title       String
   description String
   content     String
-  like        Int      @default(0)
-  view        Int      @default(0)
+  views       Int      @default(0)
   createdAt   DateTime @default(now()) @db.Timestamptz(6)
   updatedAt   DateTime @updatedAt @db.Timestamptz(6)
-  author      User     @relation(fields: [idAuthor], references: [id])
-  idAuthor    Int
+  idUser      Int
+
+  likes    LikeNote[]
+  comments Comment[]
+  user     User       @relation(fields: [idUser], references: [id])
+}
+
+model LikeNote {
+  idUser Int
+  user   User @relation(fields: [idUser], references: [id])
+
+  idNote Int
+  note   Note @relation(fields: [idNote], references: [id])
+
+  @@id([idUser])
+}
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  idUser  Int?
+  idNote  Int?
+  comment String
+
+  note Note? @relation(fields: [idNote], references: [id])
+  user User? @relation(fields: [idUser], references: [id])
 }

@@ -1,5 +1,8 @@
+import { NextResponse } from "next/server";
+
 export const response = {
   success: (body?: any) => new Response(body),
+  successJson: (json: any) => NextResponse.json(json),
   error: {
     badRequest: () =>
       new Response(undefined, {

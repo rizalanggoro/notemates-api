@@ -8,7 +8,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
     await prisma.note.update({
       where: { id: Number.parseInt(params.id) },
       data: {
-        view: {
+        views: {
           increment: 1,
         },
       },

@@ -1,8 +1,8 @@
+import { prisma } from "@/utils/prisma-client";
 import { response } from "@/utils/response";
-import { PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
 
-const prisma = new PrismaClient();
+export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,8 +19,14 @@ export async function GET(request: NextRequest) {
         id: true,
         name: true,
         email: true,
+        _count: {
+          select: {
+            followedBy: true,
+          },
+        },
       },
     });
+
     const notes = await prisma.note.findMany({
       where: {
         OR: [
@@ -33,17 +39,21 @@ export async function GET(request: NextRequest) {
         id: true,
         title: true,
         description: true,
-        view: true,
-        like: true,
+        views: true,
+        _count: { select: { likes: true, comments: true } },
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
       },
     });
 
-    return response.success(
-      JSON.stringify({
-        users,
-        notes,
-      })
-    );
+    return response.successJson({
+      users,
+      notes,
+    });
   } catch (e) {
     console.log(e);
     return response.error.internalServer();

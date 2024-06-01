@@ -3,12 +3,12 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const dynamic = "force-dynamic";
-
-export async function GET() {
+export async function GET(_: Request, { params }: { params: { id: string } }) {
   try {
-    const notes = await prisma.note.findMany({
+    const note = await prisma.note.findFirst({
+      where: { id: Number(params.id) },
       include: {
+        comments: true,
         _count: { select: { likes: true, comments: true } },
         user: {
           select: {
@@ -17,14 +17,10 @@ export async function GET() {
           },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
     });
 
-    return response.success(JSON.stringify(notes));
+    return response.success(JSON.stringify(note));
   } catch (e) {
-    console.log(e);
     return response.error.internalServer();
   }
 }
