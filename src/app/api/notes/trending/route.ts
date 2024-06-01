@@ -18,9 +18,11 @@ export async function GET() {
           },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: [
+        { views: "desc" },
+        { likes: { _count: "desc" } },
+        { title: "asc" },
+      ],
     });
 
     return response.successJson(notes);
