@@ -37,6 +37,9 @@ export async function POST(
               },
             },
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         },
       },
     });
