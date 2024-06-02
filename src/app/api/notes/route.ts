@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   try {
     const json = await request.json();
-    const { title, description, content, isUser } = json;
+    const { title, description, content, idUser } = json;
 
-    if (!title || !description || !content || !isUser)
+    if (!title || !description || !content || !idUser)
       return response.error.badRequest();
 
     const note = await prisma.note.create({
@@ -16,11 +16,11 @@ export async function POST(request: Request) {
         title,
         description,
         content,
-        idUser: isUser,
+        idUser: idUser,
       },
     });
 
-    return response.success(JSON.stringify(note));
+    return response.successJson(note);
   } catch (e) {
     return response.error.internalServer();
   }

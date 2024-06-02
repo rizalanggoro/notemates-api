@@ -10,6 +10,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
         title: true,
         description: true,
         content: true,
+        views: true,
         user: {
           select: {
             name: true,

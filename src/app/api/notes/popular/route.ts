@@ -23,6 +23,7 @@ export async function GET() {
         { likes: { _count: "desc" } },
         { title: "asc" },
       ],
+      take: 3,
     });
 
     return response.successJson(notes);
