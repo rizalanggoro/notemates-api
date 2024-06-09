@@ -11,9 +11,9 @@ export async function POST(request: Request) {
     const notes = await prisma.note.findMany({
       where: {
         user: {
-          following: {
+          followedBy: {
             some: {
-              followedById: idRequester,
+              followingId: idRequester,
             },
           },
         },
