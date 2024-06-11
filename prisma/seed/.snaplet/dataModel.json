@@ -142,7 +142,7 @@
           "isGenerated": false,
           "sequence": false,
           "hasDefaultValue": false,
-          "isId": false,
+          "isId": true,
           "maxLength": null
         },
         {
@@ -186,6 +186,7 @@
         {
           "name": "LikeNote_pkey",
           "fields": [
+            "idNote",
             "idUser"
           ],
           "nullNotDistinct": false
