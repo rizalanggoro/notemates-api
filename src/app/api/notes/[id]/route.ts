@@ -2,6 +2,23 @@ import { prisma } from "@/utils/prisma-client";
 import { response } from "@/utils/response";
 import { headers } from "next/headers";
 
+export async function DELETE(
+  _: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await prisma.note.delete({
+      where: {
+        id: Number(params.id),
+      },
+    });
+
+    return response.successJson({});
+  } catch (e) {
+    return response.error.internalServer();
+  }
+}
+
 export async function GET(_: Request, { params }: { params: { id: string } }) {
   try {
     const idRequester = Number(headers().get("idRequester"));
@@ -28,6 +45,8 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
         },
       },
     });
+
+    if (!note) return response.error.notFound();
 
     const isLiked = await prisma.likeNote.findFirst({
       where: {
