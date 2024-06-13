@@ -22,6 +22,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
         },
         user: {
           select: {
+            id: true,
             name: true,
           },
         },
